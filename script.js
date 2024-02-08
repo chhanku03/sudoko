@@ -26,12 +26,14 @@ function initGame()
      {
         box.innerText="";
         boxes[index].style.pointerEvents="all";
+        box.classList=`box box${index+1}`;
      })
     newGameBtn.classList.remove("active");
     gameInfo.innerText=`current player - ${currentPlayer}`;
 
 }
 initGame();
+      
 
 
     function swapTurn()
@@ -47,6 +49,58 @@ initGame();
         }
         gameInfo.innerText=`current player - ${currentPlayer}`;
     }
+
+    function checkGameOver()
+    {
+        let answer="";
+        winingPositions.forEach((position) =>
+        {
+            if((gameGrid[position[0]]!=="" || gameGrid[position[1]]!=="" || gameGrid[position[2]]!=="" ) 
+            && (gameGrid[position[0]]===gameGrid[position[1]]) && (gameGrid[position[1]] ===gameGrid[position[2]] ))
+                {
+                    if(gameGrid[position[0]]==="X")
+                       {
+                        answer="X";
+                       }
+                       else
+                          answer="O";
+
+                          //for disable pointer event 
+                          boxes.forEach((box) =>
+                          {
+                            box.style.pointerEvents="none";
+                          })
+
+
+                          boxes[position[0]].classList.add("win");
+                          boxes[position[1]].classList.add("win");
+                          boxes[position[2]].classList.add("win");
+                }
+        });
+        if(answer!=="")
+        {
+            gameInfo.innerText=`winer player - ${answer}`;
+            newGameBtn.classList.add("active");
+           
+            return;
+        }
+        let fillCount=0;
+        gameGrid.forEach((box)=>
+        {
+            if(box!=="")
+            
+                fillCount++;
+            
+        });
+
+        if(fillCount==9)
+        {
+            gameInfo.innerText="Game tied !";
+            newGameBtn.classList.add("active");
+        }
+     
+    }
+ 
 
   function handleClick(index)
   {
